@@ -6,6 +6,7 @@ from sklearn.preprocessing import StandardScaler
 import tensorflow as tf
 from tensorflow import keras
 from tensorflow.keras import layers
+import joblib
 
 # Create a folder to save result files
 output_dir = 'models'
@@ -24,6 +25,9 @@ scaler = StandardScaler()
 # Fit and transform the numerical features (excluding 'label')
 X_scaled = X.copy()
 X_scaled[['temperature', 'humidity', 'ph', 'rainfall']] = scaler.fit_transform(X[['temperature', 'humidity', 'ph', 'rainfall']])
+
+# Save the scaler
+joblib.dump(scaler, os.path.join(output_dir, 'scaler.gz'))
 
 # Split the data
 X_train, X_test, y_train, y_test = train_test_split(X_scaled, y, test_size=0.2, random_state=42)
